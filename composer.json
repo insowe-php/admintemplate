@@ -1,0 +1,34 @@
+{
+    "name": "insowe/admintemplate",
+    "description": "Build a admin website.",
+    "license": "license",
+    "authors": [
+        {
+            "name": "Insowe Co., Ltd.",
+            "email": "info@insowe.com"
+        }
+    ],
+    "homepage": "https://github.com/insowe-php/admintemplate",
+    "keywords": ["Laravel", "AdminTemplate"],
+    "require": {
+        "laravel/framework": "^6.2",
+        "paquettg/php-html-parser": "^2.2"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Insowe\\AdminTemplate\\": "src/"
+        }
+    },
+    "autoload-dev": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Insowe\\AdminTemplate\\AdminTemplateServiceProvider"
+            ],
+            "aliases": {
+                "AdminTemplate": "Insowe\\AdminTemplate\\Facades\\AdminTemplate"
+            }
+        }
+    }
+}
