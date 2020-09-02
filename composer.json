@@ -11,7 +11,7 @@
     "homepage": "https://github.com/insowe-php/admintemplate",
     "keywords": ["Laravel", "AdminTemplate"],
     "require": {
-        "laravel/framework": "^6.2",
+        "laravel/framework": ">6.2",
         "paquettg/php-html-parser": "^2.2"
     },
     "require-dev": {},
