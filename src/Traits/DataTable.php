@@ -8,7 +8,7 @@ trait DataTable
 {
     protected function getDataTableResponse(Request $request, $query, $callback = null, $isSearchByOrWhere = false)
     {
-        $columns = collect($request->input('columns'));
+        $columns = collect($request->input('columns', []));
         $total = $filtered = $query->count();
         
         $search = $request->input('search', ['value' => null])['value'];
@@ -34,8 +34,12 @@ trait DataTable
         }
         
         $order = $request->input('order', [['column' => 0, 'dir' => 'asc']]);
-        $data = $query->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
-                ->skip($request->input('start', 0))
+        if (isset($columns[$order[0]['column']]['data']))
+        {
+            $query = $query->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir']);
+        }
+        
+        $data = $query->skip($request->input('start', 0))
                 ->take($request->input('length', 10))
                 ->get();
         
