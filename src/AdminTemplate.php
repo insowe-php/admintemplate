@@ -88,4 +88,32 @@ class AdminTemplate
     {
         return preg_replace('/[\s\xC2\xA0]+/', '', $string);
     }
+    
+    /**
+     * 取得 sidebar 定義的頁面名稱
+     * @return string
+     */
+    public function getPageName($navName = null)
+    {
+        $navName = $navName ?? data_get(request()->route()->action, 'navName');
+        if (!empty($navName))
+        {
+            $sidebarMenu = config('admintemplate.sidebar');
+            foreach ($sidebarMenu as $lv1)
+            {
+                if (key_exists('navName', $lv1) && $lv1['navName'] == $navName)
+                        return data_get($lv1, 'name');
+                
+                if (key_exists('children', $lv1) && is_array($lv1['children']))
+                {
+                    foreach ($lv1['children'] as $lv2)
+                    {
+                        if (key_exists('navName', $lv2) && $lv2['navName'] == $navName)
+                                return data_get($lv2, 'name');
+                    }
+                }
+            }
+        }
+        return '';
+    }
 }
