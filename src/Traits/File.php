@@ -184,18 +184,28 @@ trait File
         $destFiles = [];
         $thumbnails = [];
         $destThumbnails = [];
+        $urlRegex = '/^' . preg_quote($this->getDisk()->url(''), '/') . '/';
+        
         try
         {
             foreach ($files as $key => $fromPath)
             {
-                if (preg_match('/^https?:\/\//', $fromPath)) {
+                $isFullUrl = false;
+                if (preg_match($urlRegex, $fromPath)) {
+                    // It's full url, replace to path
+                    $isFullUrl = true;
+                    $files[$key]
+                            = $fromPath
+                            = preg_replace($urlRegex, '', $fromPath);
+                }
+                else if (preg_match('/^https?:\/\//', $fromPath)) {
                     // It's third-party file url
                     continue;
                 }
                 
                 $destPath = str_replace($fromDir, $destDir, $fromPath);
                 $this->getDisk()->copy($fromPath, $destPath);
-                $destFiles[$key] = $destPath;
+                $destFiles[$key] = $isFullUrl ? $this->getDisk()->url($destPath) : $destPath;
                 
                 // 檢查是否有縮圖，有的話也要搬
                 $thumbnailPath = pathinfo($fromPath, PATHINFO_DIRNAME)
